@@ -2,6 +2,9 @@ import cv2
 import numpy as np
 import face_recognition
 import os
+import json
+import pickle
+
 from datetime import datetime
 path = '../ImagesAttendance'
 images = []
@@ -19,9 +22,11 @@ def findEncodings(images):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         encode = face_recognition.face_encodings(img)[0]
         encodeList.append(encode)
+    print(encodeList)
+
+    with open('dataset_faces.dat','wb') as f:
+        pickle.dump(encodeList,f)
     return encodeList
-
-
 
 # def markAttendance(name):
 #     with open('Attendance.csv','r+') as f:

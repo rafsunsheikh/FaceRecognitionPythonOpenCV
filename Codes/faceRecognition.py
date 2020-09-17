@@ -2,7 +2,9 @@ import cv2
 import numpy as np
 import face_recognition
 import os
+import pickle
 from datetime import datetime
+
 path = '../ImagesAttendance'
 images = []
 classNames = []
@@ -12,27 +14,12 @@ for cls in myList:
     curImg = cv2.imread(f'{path}/{cls}')
     images.append(curImg)
     classNames.append(os.path.splitext(cls)[0])
-
-def findEncodings(images):
-    encodeList = []
-    for img in images:
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        encode = face_recognition.face_encodings(img)[0]
-        encodeList.append(encode)
-    return encodeList
-
-
-
-# def markAttendance(name):
-#     with open('Attendance.csv','r+') as f:
-#         myDataList = f.readlines()
-#         for line in myDataList:
-#             entry = line.split('')
-# markAttendance('a')
-
-
-encodeListKnown = findEncodings(images)
-print('Encoding complete')
+# encodeListKnown = findEncodings(images)
+# print('Encoding complete')
+# Load face encodings
+with open('dataset_faces.dat','rb') as f:
+    encodeListKnown = pickle.load(f)
+print("Load complete")
 
 cap = cv2.VideoCapture(0)
 
